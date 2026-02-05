@@ -1,0 +1,7 @@
+.vscode/**
+out/test/**
+test/**
+**/*.map
+**/*.ts
+.eslint*
+.prettierrc

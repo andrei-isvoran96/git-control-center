@@ -1,0 +1,9 @@
+# branch.oid aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+# branch.head feature/login
+# branch.upstream origin/feature/login
+# branch.ab +2 -1
+1 M. N... 100644 100644 100644 abcdef1 abcdef2 src/app.ts
+1 .M N... 100644 100644 100644 abcdef1 abcdef2 src/service.ts
+1 MM N... 100644 100644 100644 abcdef1 abcdef2 README.md
+? docs/new-file.md
+u UU N... 100644 100644 100644 100644 abc abc abc conflict.ts

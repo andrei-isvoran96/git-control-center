@@ -1,0 +1,5 @@
+refs/heads/main	origin/main	[ahead 0, behind 0]	1738712000
+refs/heads/feature/login	origin/feature/login	[ahead 2]	1738800000
+refs/heads/hotfix/ci	-		1738700000
+refs/remotes/origin/main	-		1738712000
+refs/remotes/upstream/dev	-		1738600000

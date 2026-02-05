@@ -1,0 +1,596 @@
+{
+  "name": "git-control-center",
+  "displayName": "Git Control Center",
+  "description": "Workflow-focused Git dashboard for Visual Studio Code.",
+  "version": "0.1.0",
+  "publisher": "local-dev",
+  "engines": {
+    "vscode": "^1.88.0"
+  },
+  "categories": [
+    "SCM",
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:gitcc.branches",
+    "onView:gitcc.changes",
+    "onView:gitcc.commit",
+    "onView:gitcc.stash",
+    "onCommand:gitcc.openGitDashboard",
+    "workspaceContains:.git",
+    "onView:gitcc.worktrees",
+    "onView:gitcc.log",
+    "onCommand:gitcc.commandCenter"
+  ],
+  "main": "./out/src/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "git-control-center",
+          "title": "Git Control Center",
+          "icon": "media/gitcc.svg"
+        }
+      ]
+    },
+    "views": {
+      "git-control-center": [
+        {
+          "id": "gitcc.branches",
+          "name": "Branches",
+          "visibility": "collapsed"
+        },
+        {
+          "id": "gitcc.changes",
+          "name": "Changes",
+          "visibility": "collapsed"
+        },
+        {
+          "id": "gitcc.commit",
+          "name": "Commit",
+          "type": "webview",
+          "visibility": "visible"
+        },
+        {
+          "id": "gitcc.stash",
+          "name": "Stash",
+          "visibility": "collapsed"
+        },
+        {
+          "id": "gitcc.worktrees",
+          "name": "Worktrees",
+          "visibility": "collapsed"
+        },
+        {
+          "id": "gitcc.log",
+          "name": "Log",
+          "visibility": "collapsed"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "gitcc.fetch",
+        "title": "Fetch"
+      },
+      {
+        "command": "gitcc.pull",
+        "title": "Pull"
+      },
+      {
+        "command": "gitcc.push",
+        "title": "Push"
+      },
+      {
+        "command": "gitcc.commit",
+        "title": "Commit"
+      },
+      {
+        "command": "gitcc.stageFile",
+        "title": "Stage File"
+      },
+      {
+        "command": "gitcc.unstageFile",
+        "title": "Unstage File"
+      },
+      {
+        "command": "gitcc.checkoutBranch",
+        "title": "Checkout Branch"
+      },
+      {
+        "command": "gitcc.createBranch",
+        "title": "Create Branch"
+      },
+      {
+        "command": "gitcc.stash",
+        "title": "Stash Changes"
+      },
+      {
+        "command": "gitcc.unstash",
+        "title": "Unstash"
+      },
+      {
+        "command": "gitcc.refresh",
+        "title": "Refresh",
+        "icon": {
+          "id": "refresh"
+        }
+      },
+      {
+        "command": "gitcc.openGitDashboard",
+        "title": "Open Dashboard"
+      },
+      {
+        "command": "gitcc.switchRepository",
+        "title": "Switch Repository"
+      },
+      {
+        "command": "gitcc.renameBranch",
+        "title": "Rename Branch"
+      },
+      {
+        "command": "gitcc.deleteBranch",
+        "title": "Delete Branch"
+      },
+      {
+        "command": "gitcc.mergeIntoCurrent",
+        "title": "Merge into Current"
+      },
+      {
+        "command": "gitcc.rebaseCurrentOnto",
+        "title": "Rebase Current Onto"
+      },
+      {
+        "command": "gitcc.setUpstream",
+        "title": "Set Upstream"
+      },
+      {
+        "command": "gitcc.compareWithCurrent",
+        "title": "Compare with Current"
+      },
+      {
+        "command": "gitcc.stageAll",
+        "title": "Stage All"
+      },
+      {
+        "command": "gitcc.unstageAll",
+        "title": "Unstage All"
+      },
+      {
+        "command": "gitcc.discardAll",
+        "title": "Discard All"
+      },
+      {
+        "command": "gitcc.stashKeepIndex",
+        "title": "Stash Keep Index"
+      },
+      {
+        "command": "gitcc.stashPop",
+        "title": "Stash Pop"
+      },
+      {
+        "command": "gitcc.stashApply",
+        "title": "Stash Apply"
+      },
+      {
+        "command": "gitcc.stashDrop",
+        "title": "Stash Drop"
+      },
+      {
+        "command": "gitcc.stashBranch",
+        "title": "Branch from Stash"
+      },
+      {
+        "command": "gitcc.viewStashPatch",
+        "title": "View Stash Patch"
+      },
+      {
+        "command": "gitcc.viewLog",
+        "title": "View Log"
+      },
+      {
+        "command": "gitcc.openMergeEditor",
+        "title": "Open Merge Editor"
+      },
+      {
+        "command": "gitcc.abortMergeOrRebase",
+        "title": "Abort Merge/Rebase"
+      },
+      {
+        "command": "gitcc.forcePushWithLease",
+        "title": "Force Push with Lease"
+      },
+      {
+        "command": "gitcc.stageHunk",
+        "title": "Stage Hunk"
+      },
+      {
+        "command": "gitcc.discardFile",
+        "title": "Discard File"
+      },
+      {
+        "command": "gitcc.sync",
+        "title": "Sync",
+        "icon": {
+          "id": "sync"
+        }
+      },
+      {
+        "command": "gitcc.branchActions",
+        "title": "Branch Actions",
+        "icon": {
+          "id": "tools"
+        }
+      },
+      {
+        "command": "gitcc.smartCheckout",
+        "title": "Smart Checkout",
+        "icon": {
+          "id": "arrow-swap"
+        }
+      },
+      {
+        "command": "gitcc.pinBranch",
+        "title": "Pin Branch",
+        "icon": {
+          "id": "pinned"
+        }
+      },
+      {
+        "command": "gitcc.unpinBranch",
+        "title": "Unpin Branch",
+        "icon": {
+          "id": "pinned-dirty"
+        }
+      },
+      {
+        "command": "gitcc.checkoutRecentBranch",
+        "title": "Checkout Recent Branch",
+        "icon": {
+          "id": "history"
+        }
+      },
+      {
+        "command": "gitcc.openWorktree",
+        "title": "Open Worktree"
+      },
+      {
+        "command": "gitcc.pruneWorktrees",
+        "title": "Prune Worktrees",
+        "icon": {
+          "id": "trash"
+        }
+      },
+      {
+        "command": "gitcc.createWorktree",
+        "title": "Create Worktree"
+      },
+      {
+        "command": "gitcc.copyCommitHash",
+        "title": "Copy Commit Hash",
+        "icon": {
+          "id": "copy"
+        }
+      },
+      {
+        "command": "gitcc.openCommitDetails",
+        "title": "Open Commit Details"
+      },
+      {
+        "command": "gitcc.checkoutCommit",
+        "title": "Checkout Commit"
+      },
+      {
+        "command": "gitcc.commandCenter",
+        "title": "Command Center",
+        "icon": {
+          "id": "terminal-cmd"
+        }
+      },
+      {
+        "command": "gitcc.compareBranches",
+        "title": "Compare Branches"
+      }
+    ],
+    "configuration": {
+      "title": "Git Control Center",
+      "properties": {
+        "gitcc.refreshIntervalSeconds": {
+          "type": "number",
+          "default": 10,
+          "minimum": 5,
+          "maximum": 60,
+          "description": "Background refresh interval in seconds."
+        },
+        "gitcc.pullRebase": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use rebase by default when pulling."
+        },
+        "gitcc.showRemoteBranches": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show remote branches in the Branches view."
+        },
+        "gitcc.branchGroupingPrefixes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "feature/",
+            "bugfix/",
+            "hotfix/",
+            "release/"
+          ],
+          "description": "Prefixes used to group local branches."
+        },
+        "gitcc.confirmForcePush": {
+          "type": "boolean",
+          "default": true,
+          "description": "Prompt for confirmation before force push with lease."
+        },
+        "gitcc.defaultRemote": {
+          "type": "string",
+          "default": "origin",
+          "description": "Default remote for fetch/pull/push actions."
+        },
+        "gitcc.commitTemplate": {
+          "type": "string",
+          "default": "",
+          "description": "Default commit message template."
+        },
+        "gitcc.enableTelemetry": {
+          "type": "boolean",
+          "default": false,
+          "description": "Reserved for future telemetry features. No external calls are made."
+        },
+        "gitcc.smartCheckout.defaultStrategy": {
+          "type": "string",
+          "enum": [
+            "ask",
+            "autoStash",
+            "cancel"
+          ],
+          "default": "ask",
+          "description": "Default strategy for smart checkout when working tree is dirty."
+        },
+        "gitcc.postCommitAction": {
+          "type": "string",
+          "enum": [
+            "none",
+            "push",
+            "sync"
+          ],
+          "default": "none",
+          "description": "Action after successful commit."
+        }
+      }
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "gitcc.refresh",
+          "when": "view == gitcc.branches || view == gitcc.changes || view == gitcc.commit || view == gitcc.stash || view == gitcc.worktrees || view == gitcc.log",
+          "group": "navigation@1"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "gitcc.branchActions",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "group": "inline@1"
+        },
+        {
+          "command": "gitcc.pinBranch",
+          "when": "view == gitcc.branches && viewItem == gitcc.branch",
+          "group": "navigation@2"
+        },
+        {
+          "command": "gitcc.unpinBranch",
+          "when": "view == gitcc.branches && viewItem == gitcc.branch.favorite",
+          "group": "navigation@3"
+        },
+        {
+          "command": "gitcc.checkoutBranch",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "group": "navigation@4"
+        },
+        {
+          "command": "gitcc.smartCheckout",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "group": "navigation@5"
+        },
+        {
+          "command": "gitcc.deleteBranch",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "group": "navigation@6"
+        },
+        {
+          "command": "gitcc.renameBranch",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "group": "navigation@7"
+        },
+        {
+          "command": "gitcc.mergeIntoCurrent",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "group": "navigation@8"
+        },
+        {
+          "command": "gitcc.rebaseCurrentOnto",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "group": "navigation@9"
+        },
+        {
+          "command": "gitcc.setUpstream",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "group": "navigation@10"
+        },
+        {
+          "command": "gitcc.compareWithCurrent",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "group": "navigation@11"
+        },
+        {
+          "command": "gitcc.stageFile",
+          "when": "view == gitcc.changes && viewItem == gitcc.file.unstaged",
+          "group": "inline@1"
+        },
+        {
+          "command": "gitcc.unstageFile",
+          "when": "view == gitcc.changes && viewItem == gitcc.file.staged",
+          "group": "inline@1"
+        },
+        {
+          "command": "gitcc.stageHunk",
+          "when": "view == gitcc.changes && viewItem == gitcc.file.unstaged",
+          "group": "navigation@3"
+        },
+        {
+          "command": "gitcc.discardFile",
+          "when": "view == gitcc.changes && viewItem == gitcc.file.unstaged",
+          "group": "navigation@4"
+        },
+        {
+          "command": "gitcc.openMergeEditor",
+          "when": "view == gitcc.changes && viewItem == gitcc.file.conflicts",
+          "group": "inline@2"
+        },
+        {
+          "command": "gitcc.abortMergeOrRebase",
+          "when": "view == gitcc.changes && viewItem == gitcc.file.conflicts",
+          "group": "navigation@8"
+        },
+        {
+          "command": "gitcc.stashApply",
+          "when": "view == gitcc.stash && viewItem == gitcc.stash",
+          "group": "inline@1"
+        },
+        {
+          "command": "gitcc.stashPop",
+          "when": "view == gitcc.stash && viewItem == gitcc.stash",
+          "group": "inline@2"
+        },
+        {
+          "command": "gitcc.stashDrop",
+          "when": "view == gitcc.stash && viewItem == gitcc.stash",
+          "group": "navigation@3"
+        },
+        {
+          "command": "gitcc.stashBranch",
+          "when": "view == gitcc.stash && viewItem == gitcc.stash",
+          "group": "navigation@4"
+        },
+        {
+          "command": "gitcc.viewStashPatch",
+          "when": "view == gitcc.stash && viewItem == gitcc.stash",
+          "group": "navigation@5"
+        },
+        {
+          "command": "gitcc.openWorktree",
+          "when": "view == gitcc.worktrees && viewItem == gitcc.worktree",
+          "group": "inline@1"
+        },
+        {
+          "command": "gitcc.copyCommitHash",
+          "when": "view == gitcc.log && viewItem == gitcc.commit",
+          "group": "inline@1"
+        },
+        {
+          "command": "gitcc.openCommitDetails",
+          "when": "view == gitcc.log && viewItem == gitcc.commit",
+          "group": "navigation@2"
+        },
+        {
+          "command": "gitcc.checkoutCommit",
+          "when": "view == gitcc.log && viewItem == gitcc.commit",
+          "group": "navigation@3"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "gitcc.commandCenter",
+          "when": "true"
+        },
+        {
+          "command": "gitcc.sync",
+          "when": "true"
+        },
+        {
+          "command": "gitcc.smartCheckout",
+          "when": "true"
+        },
+        {
+          "command": "gitcc.branchActions",
+          "when": "true"
+        },
+        {
+          "command": "gitcc.compareBranches",
+          "when": "true"
+        },
+        {
+          "command": "gitcc.fetch",
+          "when": "true"
+        },
+        {
+          "command": "gitcc.pull",
+          "when": "true"
+        },
+        {
+          "command": "gitcc.push",
+          "when": "true"
+        },
+        {
+          "command": "gitcc.commit",
+          "when": "true"
+        },
+        {
+          "command": "gitcc.refresh",
+          "when": "true"
+        },
+        {
+          "command": "gitcc.openGitDashboard",
+          "when": "true"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "gitcc.branchActions",
+        "key": "ctrl+alt+b",
+        "mac": "cmd+alt+b",
+        "when": "editorTextFocus || explorerViewletVisible"
+      },
+      {
+        "command": "gitcc.commandCenter",
+        "key": "ctrl+alt+g",
+        "mac": "cmd+alt+g",
+        "when": "editorTextFocus || explorerViewletVisible"
+      },
+      {
+        "command": "gitcc.smartCheckout",
+        "key": "ctrl+alt+c",
+        "mac": "cmd+alt+c",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src test --ext .ts",
+    "format": "prettier --write .",
+    "test": "vitest run test"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/vscode": "^1.88.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.1",
+    "@typescript-eslint/parser": "^8.18.1",
+    "eslint": "^8.57.1",
+    "prettier": "^3.4.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8",
+    "@vscode/test-electron": "^2.4.1"
+  }
+}
