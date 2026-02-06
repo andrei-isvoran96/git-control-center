@@ -7,12 +7,37 @@
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
+        "--new-window",
+        "--disable-restore-windows",
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
       "outFiles": [
         "${workspaceFolder}/out/**/*.js"
       ],
       "preLaunchTask": "npm: compile"
+    },
+    {
+      "name": "Run Git Control Center Extension On Folder",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--new-window",
+        "--disable-restore-windows",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "${input:targetFolder}"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/out/**/*.js"
+      ],
+      "preLaunchTask": "npm: compile"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "targetFolder",
+      "type": "promptString",
+      "description": "Absolute folder path to open in Extension Development Host"
     }
   ]
 }

@@ -13,7 +13,6 @@
   ],
   "activationEvents": [
     "onView:gitcc.branches",
-    "onView:gitcc.changes",
     "onView:gitcc.commit",
     "onView:gitcc.stash",
     "onCommand:gitcc.openGitDashboard",
@@ -38,11 +37,6 @@
         {
           "id": "gitcc.branches",
           "name": "Branches",
-          "visibility": "collapsed"
-        },
-        {
-          "id": "gitcc.changes",
-          "name": "Changes",
           "visibility": "collapsed"
         },
         {
@@ -290,6 +284,10 @@
       {
         "command": "gitcc.compareBranches",
         "title": "Compare Branches"
+      },
+      {
+        "command": "gitcc.toggleCommitFile",
+        "title": "Toggle Commit File"
       }
     ],
     "configuration": {
@@ -371,7 +369,7 @@
       "view/title": [
         {
           "command": "gitcc.refresh",
-          "when": "view == gitcc.branches || view == gitcc.changes || view == gitcc.commit || view == gitcc.stash || view == gitcc.worktrees || view == gitcc.log",
+          "when": "view == gitcc.branches || view == gitcc.commit || view == gitcc.stash || view == gitcc.worktrees || view == gitcc.log",
           "group": "navigation@1"
         }
       ],
@@ -430,36 +428,6 @@
           "command": "gitcc.compareWithCurrent",
           "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
           "group": "navigation@11"
-        },
-        {
-          "command": "gitcc.stageFile",
-          "when": "view == gitcc.changes && viewItem == gitcc.file.unstaged",
-          "group": "inline@1"
-        },
-        {
-          "command": "gitcc.unstageFile",
-          "when": "view == gitcc.changes && viewItem == gitcc.file.staged",
-          "group": "inline@1"
-        },
-        {
-          "command": "gitcc.stageHunk",
-          "when": "view == gitcc.changes && viewItem == gitcc.file.unstaged",
-          "group": "navigation@3"
-        },
-        {
-          "command": "gitcc.discardFile",
-          "when": "view == gitcc.changes && viewItem == gitcc.file.unstaged",
-          "group": "navigation@4"
-        },
-        {
-          "command": "gitcc.openMergeEditor",
-          "when": "view == gitcc.changes && viewItem == gitcc.file.conflicts",
-          "group": "inline@2"
-        },
-        {
-          "command": "gitcc.abortMergeOrRebase",
-          "when": "view == gitcc.changes && viewItem == gitcc.file.conflicts",
-          "group": "navigation@8"
         },
         {
           "command": "gitcc.stashApply",

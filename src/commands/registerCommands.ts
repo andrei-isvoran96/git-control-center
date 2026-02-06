@@ -250,6 +250,20 @@ export function registerCommands(
     }, 'Stage File');
   });
 
+  register('gitcc.toggleCommitFile', async (payload?: { path?: string; stage?: boolean }) => {
+    await withRepo(async (repo) => {
+      const targetPath = payload?.path?.trim();
+      if (!targetPath) {
+        return;
+      }
+      if (payload?.stage) {
+        await deps.gitService.stageFile(repo.rootUri, targetPath);
+      } else {
+        await deps.gitService.unstageFile(repo.rootUri, targetPath);
+      }
+    }, 'Toggle Commit File');
+  });
+
   register('gitcc.unstageFile', async (change?: FileChange) => {
     await withRepo(async (repo) => {
       const target = await resolveFileChange(change, providers.changesProvider, 'staged');

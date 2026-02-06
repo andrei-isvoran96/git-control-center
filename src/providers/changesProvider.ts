@@ -38,10 +38,26 @@ export class ChangesProvider implements vscode.TreeDataProvider<ChangeNode> {
 
     if (!element) {
       return [
-        new GroupTreeItem('Staged', 'gitcc.group.staged'),
-        new GroupTreeItem('Unstaged', 'gitcc.group.unstaged'),
-        new GroupTreeItem('Untracked', 'gitcc.group.untracked'),
-        new GroupTreeItem('Conflicts', 'gitcc.group.conflicts'),
+        new GroupTreeItem(
+          `Staged${this.status.staged.length ? ` ${this.status.staged.length}` : ''}`,
+          'gitcc.group.staged',
+          vscode.TreeItemCollapsibleState.Expanded,
+        ),
+        new GroupTreeItem(
+          `Unstaged${this.status.unstaged.length ? ` ${this.status.unstaged.length}` : ''}`,
+          'gitcc.group.unstaged',
+          vscode.TreeItemCollapsibleState.Collapsed,
+        ),
+        new GroupTreeItem(
+          `Unversioned Files${this.status.untracked.length ? ` ${this.status.untracked.length}` : ''}`,
+          'gitcc.group.untracked',
+          vscode.TreeItemCollapsibleState.Collapsed,
+        ),
+        new GroupTreeItem(
+          `Conflicts${this.status.conflicts.length ? ` ${this.status.conflicts.length}` : ''}`,
+          'gitcc.group.conflicts',
+          vscode.TreeItemCollapsibleState.Collapsed,
+        ),
       ];
     }
 
@@ -49,16 +65,16 @@ export class ChangesProvider implements vscode.TreeDataProvider<ChangeNode> {
       return [];
     }
 
-    if (element.groupLabel === 'Staged') {
+    if (element.contextValueKey === 'gitcc.group.staged') {
       return this.status.staged.map((change) => new ChangeFileTreeItem(change));
     }
-    if (element.groupLabel === 'Unstaged') {
+    if (element.contextValueKey === 'gitcc.group.unstaged') {
       return this.status.unstaged.map((change) => new ChangeFileTreeItem(change));
     }
-    if (element.groupLabel === 'Untracked') {
+    if (element.contextValueKey === 'gitcc.group.untracked') {
       return this.status.untracked.map((change) => new ChangeFileTreeItem(change));
     }
-    if (element.groupLabel === 'Conflicts') {
+    if (element.contextValueKey === 'gitcc.group.conflicts') {
       return this.status.conflicts.map((change) => new ChangeFileTreeItem(change));
     }
 

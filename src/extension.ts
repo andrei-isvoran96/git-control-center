@@ -14,6 +14,7 @@ import { GitService } from './services/gitService';
 import { RefreshOrchestrator } from './services/refreshOrchestrator';
 import { RepositoryManager } from './services/repositoryManager';
 import { StatusBarController } from './ui/statusBarController';
+import { Debouncer } from './utils/debounce';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   const configService = new ConfigService();
@@ -49,7 +50,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   context.subscriptions.push(
     vscode.window.registerTreeDataProvider('gitcc.branches', branchesProvider),
-    vscode.window.registerTreeDataProvider('gitcc.changes', changesProvider),
     vscode.window.registerTreeDataProvider('gitcc.stash', stashProvider),
     vscode.window.registerTreeDataProvider('gitcc.worktrees', worktreesProvider),
     vscode.window.registerTreeDataProvider('gitcc.log', miniLogProvider),
@@ -67,9 +67,57 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     providers,
   );
 
+  const commitStatusDebouncer = new Debouncer();
+  const refreshCommitStatus = async (): Promise<void> => {
+    const repo = repositoryManager.getActiveRepository();
+    if (!repo) {
+      return;
+    }
+    try {
+      const status = await gitService.getStatus(repo.rootUri);
+      commitViewProvider.updateStatus(status);
+    } catch {
+      // non-fatal UI refresh path
+    }
+  };
+  const scheduleCommitStatusRefresh = () => {
+    commitStatusDebouncer.trigger(() => {
+      void refreshCommitStatus();
+    }, 250);
+  };
+
+  const syncActiveRepoFromEditor = async (editor: vscode.TextEditor | undefined): Promise<void> => {
+    const uri = editor?.document.uri;
+    if (!uri || uri.scheme !== 'file') {
+      return;
+    }
+    const changed = repositoryManager.setActiveRepositoryForUri(uri);
+    if (changed) {
+      await vscode.commands.executeCommand('gitcc.refresh');
+    } else {
+      scheduleCommitStatusRefresh();
+    }
+  };
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor((editor) => {
+      void syncActiveRepoFromEditor(editor);
+    }),
+    vscode.workspace.onDidSaveTextDocument(() => {
+      scheduleCommitStatusRefresh();
+    }),
+    vscode.workspace.onDidChangeTextDocument(() => {
+      scheduleCommitStatusRefresh();
+    }),
+  );
+
   context.subscriptions.push(
     commitViewProvider.onCommit(async (request) => {
       await vscode.commands.executeCommand('gitcc.commitNow', request.message, request.options);
+    }),
+  );
+  context.subscriptions.push(
+    commitViewProvider.onToggleFile(async (request) => {
+      await vscode.commands.executeCommand('gitcc.toggleCommitFile', request);
     }),
   );
 
@@ -82,6 +130,11 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   }, configService);
   refreshOrchestrator.start();
   context.subscriptions.push(refreshOrchestrator);
+  repositoryManager.onDidChangeRepositories(() => {
+    scheduleCommitStatusRefresh();
+  });
+  await syncActiveRepoFromEditor(vscode.window.activeTextEditor);
+  await refreshCommitStatus();
 
   const activeRepo = repositoryManager.getActiveRepository();
   if (activeRepo?.hasSubmodules) {

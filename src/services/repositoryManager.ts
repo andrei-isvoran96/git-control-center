@@ -29,6 +29,22 @@ export class RepositoryManager implements vscode.Disposable {
     this.onDidChangeRepositoriesEmitter.fire();
   }
 
+  setActiveRepositoryForUri(uri: vscode.Uri): boolean {
+    const targetPath = uri.fsPath;
+    const matches = this.repositories
+      .filter((repo) => targetPath === repo.rootUri.fsPath || targetPath.startsWith(`${repo.rootUri.fsPath}${pathSeparator()}`))
+      .sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length);
+
+    const match = matches[0];
+    if (!match || this.activeRepositoryId === match.id) {
+      return false;
+    }
+
+    this.activeRepositoryId = match.id;
+    this.onDidChangeRepositoriesEmitter.fire();
+    return true;
+  }
+
   async refreshRepositories(force = false): Promise<void> {
     const found = await this.gitService.detectRepositories();
     const next: RepositoryInfo[] = [];
@@ -69,4 +85,8 @@ export class RepositoryManager implements vscode.Disposable {
   dispose(): void {
     this.onDidChangeRepositoriesEmitter.dispose();
   }
+}
+
+function pathSeparator(): string {
+  return process.platform === 'win32' ? '\\' : '/';
 }

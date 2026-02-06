@@ -18,8 +18,12 @@ export class RepositoryTreeItem extends vscode.TreeItem {
 }
 
 export class GroupTreeItem extends vscode.TreeItem {
-  constructor(public readonly groupLabel: string, public readonly contextValueKey: string) {
-    super(groupLabel, vscode.TreeItemCollapsibleState.Expanded);
+  constructor(
+    public readonly groupLabel: string,
+    public readonly contextValueKey: string,
+    collapsibleState: vscode.TreeItemCollapsibleState = vscode.TreeItemCollapsibleState.Collapsed,
+  ) {
+    super(groupLabel, collapsibleState);
     this.contextValue = contextValueKey;
     this.iconPath = new vscode.ThemeIcon('folder');
   }
