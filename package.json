@@ -106,6 +106,10 @@
         "title": "Create Branch"
       },
       {
+        "command": "gitcc.createBranchFromRemote",
+        "title": "New Branch From"
+      },
+      {
         "command": "gitcc.stash",
         "title": "Stash Changes"
       },
@@ -410,47 +414,52 @@
       "view/item/context": [
         {
           "command": "gitcc.branchActions",
-          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite || viewItem == gitcc.branch.local || viewItem == gitcc.branch.remote)",
           "group": "inline@1"
         },
         {
           "command": "gitcc.checkoutBranch",
-          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite || viewItem == gitcc.branch.local || viewItem == gitcc.branch.remote)",
           "group": "navigation@4"
         },
         {
+          "command": "gitcc.createBranchFromRemote",
+          "when": "view == gitcc.branches && viewItem == gitcc.branch.remote",
+          "group": "navigation@5"
+        },
+        {
           "command": "gitcc.smartCheckout",
-          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite || viewItem == gitcc.branch.local || viewItem == gitcc.branch.remote)",
           "group": "navigation@5"
         },
         {
           "command": "gitcc.deleteBranch",
-          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite || viewItem == gitcc.branch.local || viewItem == gitcc.branch.remote)",
           "group": "navigation@6"
         },
         {
           "command": "gitcc.renameBranch",
-          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite || viewItem == gitcc.branch.local || viewItem == gitcc.branch.remote)",
           "group": "navigation@7"
         },
         {
           "command": "gitcc.mergeIntoCurrent",
-          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite || viewItem == gitcc.branch.local || viewItem == gitcc.branch.remote)",
           "group": "navigation@8"
         },
         {
           "command": "gitcc.rebaseCurrentOnto",
-          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite || viewItem == gitcc.branch.local || viewItem == gitcc.branch.remote)",
           "group": "navigation@9"
         },
         {
           "command": "gitcc.setUpstream",
-          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite || viewItem == gitcc.branch.local || viewItem == gitcc.branch.remote)",
           "group": "navigation@10"
         },
         {
           "command": "gitcc.compareWithCurrent",
-          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
+          "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite || viewItem == gitcc.branch.local || viewItem == gitcc.branch.remote)",
           "group": "navigation@11"
         },
         {

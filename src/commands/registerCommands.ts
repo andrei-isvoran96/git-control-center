@@ -438,6 +438,33 @@ export function registerCommands(
     }, 'Create Branch');
   });
 
+  register('gitcc.createBranchFromRemote', async (branchArg?: BranchInfo | { branch?: BranchInfo }) => {
+    await withRepo(async (repo) => {
+      let extractedBranch: BranchInfo | undefined;
+      if (branchArg && typeof branchArg === 'object' && 'shortName' in branchArg && 'kind' in branchArg) {
+        extractedBranch = branchArg as BranchInfo;
+      } else if (branchArg && typeof branchArg === 'object' && 'branch' in branchArg) {
+        extractedBranch = branchArg.branch;
+      }
+      if (!extractedBranch || extractedBranch.kind !== 'remote') {
+        void vscode.window.showInformationMessage('Select a remote branch and run "New Branch From" from its context menu.');
+        return;
+      }
+
+      const suggestedName = extractedBranch.shortName.replace(/^[^/]+\//, '');
+      const newName = await vscode.window.showInputBox({
+        prompt: `New branch from ${extractedBranch.shortName}`,
+        value: suggestedName,
+      });
+      if (!newName) {
+        return;
+      }
+
+      await deps.gitService.createBranchFrom(repo.rootUri, newName, extractedBranch.shortName);
+      await deps.branchMemoryService.recordCheckout(repo.rootUri.fsPath, newName);
+    }, 'New Branch From');
+  });
+
   register('gitcc.renameBranch', async (branchArg?: BranchInfo) => {
     await withRepo(async (repo) => {
       const branch =

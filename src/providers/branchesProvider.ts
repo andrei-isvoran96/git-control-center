@@ -45,7 +45,7 @@ export class BranchesProvider implements vscode.TreeDataProvider<BranchNode> {
 
   getTreeItem(element: BranchNode): vscode.TreeItem {
     if (element instanceof BranchTreeItem) {
-      element.contextValue = 'gitcc.branch';
+      element.contextValue = element.branch.kind === 'remote' ? 'gitcc.branch.remote' : 'gitcc.branch.local';
       element.command = {
         title: 'Checkout Branch',
         command: 'gitcc.checkoutBranch',
