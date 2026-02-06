@@ -35,7 +35,7 @@
         {
           "id": "git-control-center",
           "title": "Git Control Center",
-          "icon": "media/gitcc.svg"
+          "icon": "media/activitybar.svg"
         }
       ]
     },
