@@ -9,6 +9,7 @@
       "args": [
         "--new-window",
         "--disable-restore-windows",
+        "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
       "outFiles": [
@@ -24,6 +25,7 @@
       "args": [
         "--new-window",
         "--disable-restore-windows",
+        "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}",
         "${input:targetFolder}"
       ],

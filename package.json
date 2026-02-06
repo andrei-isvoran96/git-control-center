@@ -2,13 +2,20 @@
   "name": "git-control-center",
   "displayName": "Git Control Center",
   "description": "Workflow-focused Git dashboard for Visual Studio Code.",
-  "version": "0.1.0",
-  "publisher": "local-dev",
+  "version": "0.1.2",
+  "publisher": "andrei-isvoran96",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andrei-isvoran96/git-control-center.git"
+  },
+  "homepage": "https://github.com/andrei-isvoran96/git-control-center",
+  "bugs": {
+    "url": "https://github.com/andrei-isvoran96/git-control-center/issues"
+  },
   "engines": {
     "vscode": "^1.88.0"
   },
   "categories": [
-    "SCM",
     "Other"
   ],
   "activationEvents": [
@@ -288,6 +295,18 @@
       {
         "command": "gitcc.toggleCommitFile",
         "title": "Toggle Commit File"
+      },
+      {
+        "command": "gitc.refresh",
+        "title": "Refresh (Legacy Alias)"
+      },
+      {
+        "command": "gitc.smartCheckout",
+        "title": "Smart Checkout (Legacy Alias)"
+      },
+      {
+        "command": "gitc.branchActions",
+        "title": "Branch Actions (Legacy Alias)"
       }
     ],
     "configuration": {
@@ -555,10 +574,13 @@
     "@types/vscode": "^1.88.0",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
     "@typescript-eslint/parser": "^8.18.1",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^2.24.0",
     "eslint": "^8.57.1",
     "prettier": "^3.4.2",
+    "sharp": "^0.34.5",
     "typescript": "^5.6.3",
-    "vitest": "^2.1.8",
-    "@vscode/test-electron": "^2.4.1"
-  }
+    "vitest": "^2.1.8"
+  },
+  "icon": "media/icon.png"
 }

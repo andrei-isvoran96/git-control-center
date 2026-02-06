@@ -66,6 +66,17 @@ export function registerCommands(
     await refreshAll(deps, providers, true);
   });
 
+  // Backward-compat aliases for earlier typoed command ids.
+  register('gitc.refresh', async () => {
+    await vscode.commands.executeCommand('gitcc.refresh');
+  });
+  register('gitc.smartCheckout', async () => {
+    await vscode.commands.executeCommand('gitcc.smartCheckout');
+  });
+  register('gitc.branchActions', async () => {
+    await vscode.commands.executeCommand('gitcc.branchActions');
+  });
+
   register('gitcc.openGitDashboard', async () => {
     await vscode.commands.executeCommand('workbench.view.extension.git-control-center');
     await vscode.commands.executeCommand('gitcc.branches.focus');
