@@ -33,7 +33,7 @@ export class BranchTreeItem extends vscode.TreeItem {
   constructor(public readonly branch: BranchInfo) {
     super(branch.shortName, vscode.TreeItemCollapsibleState.None);
     this.contextValue = 'gitcc.branch';
-    this.iconPath = new vscode.ThemeIcon('git-branch');
+    this.iconPath = new vscode.ThemeIcon(branch.isCurrent ? 'star-full' : 'git-branch');
     this.description = [
       branch.isCurrent ? 'current' : '',
       branch.ahead || branch.behind ? `↑${branch.ahead} ↓${branch.behind}` : '',

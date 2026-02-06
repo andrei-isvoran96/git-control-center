@@ -135,6 +135,10 @@ export function registerCommands(
     }, 'Fetch');
   });
 
+  register('gitcc.fetchBranches', async () => {
+    await vscode.commands.executeCommand('gitcc.fetch');
+  });
+
   register('gitcc.pull', async () => {
     await withRepo(async (repo) => {
       const config = deps.configService.get();

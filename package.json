@@ -2,7 +2,7 @@
   "name": "git-control-center",
   "displayName": "Git Control Center",
   "description": "Workflow-focused Git dashboard for Visual Studio Code.",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "publisher": "andrei-isvoran96",
   "repository": {
     "type": "git",
@@ -72,7 +72,10 @@
     "commands": [
       {
         "command": "gitcc.fetch",
-        "title": "Fetch"
+        "title": "Fetch",
+        "icon": {
+          "id": "cloud-download"
+        }
       },
       {
         "command": "gitcc.pull",
@@ -307,6 +310,13 @@
       {
         "command": "gitc.branchActions",
         "title": "Branch Actions (Legacy Alias)"
+      },
+      {
+        "command": "gitcc.fetchBranches",
+        "title": "Fetch",
+        "icon": {
+          "id": "cloud-download"
+        }
       }
     ],
     "configuration": {
@@ -387,9 +397,14 @@
     "menus": {
       "view/title": [
         {
+          "command": "gitcc.fetchBranches",
+          "when": "view == gitcc.branches",
+          "group": "navigation@1"
+        },
+        {
           "command": "gitcc.refresh",
           "when": "view == gitcc.branches || view == gitcc.commit || view == gitcc.stash || view == gitcc.worktrees || view == gitcc.log",
-          "group": "navigation@1"
+          "group": "navigation@2"
         }
       ],
       "view/item/context": [
@@ -397,16 +412,6 @@
           "command": "gitcc.branchActions",
           "when": "view == gitcc.branches && (viewItem == gitcc.branch || viewItem == gitcc.branch.favorite)",
           "group": "inline@1"
-        },
-        {
-          "command": "gitcc.pinBranch",
-          "when": "view == gitcc.branches && viewItem == gitcc.branch",
-          "group": "navigation@2"
-        },
-        {
-          "command": "gitcc.unpinBranch",
-          "when": "view == gitcc.branches && viewItem == gitcc.branch.favorite",
-          "group": "navigation@3"
         },
         {
           "command": "gitcc.checkoutBranch",
@@ -537,6 +542,10 @@
         },
         {
           "command": "gitcc.openGitDashboard",
+          "when": "true"
+        },
+        {
+          "command": "gitcc.fetchBranches",
           "when": "true"
         }
       ]

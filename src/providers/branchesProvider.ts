@@ -4,7 +4,6 @@ import { GitService } from '../services/gitService';
 import { RepositoryManager } from '../services/repositoryManager';
 import { ConfigService } from '../services/configService';
 import { BranchTreeItem, GroupTreeItem } from '../ui/treeItems';
-import { BranchMemoryService } from '../services/branchMemoryService';
 
 type BranchNode = GroupTreeItem | BranchTreeItem;
 
@@ -14,14 +13,11 @@ export class BranchesProvider implements vscode.TreeDataProvider<BranchNode> {
 
   private localByGroup = new Map<string, BranchInfo[]>();
   private remoteByGroup = new Map<string, BranchInfo[]>();
-  private favorites: BranchInfo[] = [];
-  private recents: BranchInfo[] = [];
 
   constructor(
     private readonly gitService: GitService,
     private readonly repositoryManager: RepositoryManager,
     private readonly configService: ConfigService,
-    private readonly branchMemoryService: BranchMemoryService,
   ) {
     this.repositoryManager.onDidChangeRepositories(() => {
       void this.refresh();
@@ -33,8 +29,6 @@ export class BranchesProvider implements vscode.TreeDataProvider<BranchNode> {
     if (!repo) {
       this.localByGroup.clear();
       this.remoteByGroup.clear();
-      this.favorites = [];
-      this.recents = [];
       this.onDidChangeTreeDataEmitter.fire();
       return;
     }
@@ -46,27 +40,12 @@ export class BranchesProvider implements vscode.TreeDataProvider<BranchNode> {
     this.localByGroup = this.groupLocal(locals, config.branchGroupingPrefixes);
     this.remoteByGroup = this.groupRemote(remotes);
 
-    const repoKey = repo.rootUri.fsPath;
-    const byName = new Map(branches.map((branch) => [branch.shortName, branch]));
-    this.favorites = this.branchMemoryService
-      .getFavorites(repoKey)
-      .map((name) => byName.get(name))
-      .filter((value): value is BranchInfo => Boolean(value));
-    this.recents = this.branchMemoryService
-      .getRecents(repoKey)
-      .map((name) => byName.get(name))
-      .filter((value): value is BranchInfo => Boolean(value));
-
     this.onDidChangeTreeDataEmitter.fire();
   }
 
   getTreeItem(element: BranchNode): vscode.TreeItem {
     if (element instanceof BranchTreeItem) {
-      const repo = this.repositoryManager.getActiveRepository();
-      const isFavorite = repo
-        ? this.branchMemoryService.isFavorite(repo.rootUri.fsPath, element.branch.shortName)
-        : false;
-      element.contextValue = isFavorite ? 'gitcc.branch.favorite' : 'gitcc.branch';
+      element.contextValue = 'gitcc.branch';
       element.command = {
         title: 'Checkout Branch',
         command: 'gitcc.checkoutBranch',
@@ -82,30 +61,34 @@ export class BranchesProvider implements vscode.TreeDataProvider<BranchNode> {
   getChildren(element?: BranchNode): BranchNode[] {
     if (!element) {
       const roots: BranchNode[] = [
-        new GroupTreeItem('FAVORITES', 'gitcc.group.favorites'),
-        new GroupTreeItem('RECENT', 'gitcc.group.recent'),
-        new GroupTreeItem('LOCAL', 'gitcc.group.local'),
+        new GroupTreeItem('LOCAL', 'gitcc.group.local', vscode.TreeItemCollapsibleState.Expanded),
       ];
       if (this.configService.get().showRemoteBranches) {
-        roots.push(new GroupTreeItem('REMOTE', 'gitcc.group.remote'));
+        roots.push(new GroupTreeItem('REMOTE', 'gitcc.group.remote', vscode.TreeItemCollapsibleState.Expanded));
       }
       return roots;
     }
 
-    if (element instanceof GroupTreeItem && element.groupLabel === 'FAVORITES') {
-      return this.favorites.map((branch) => new BranchTreeItem(branch));
-    }
-
-    if (element instanceof GroupTreeItem && element.groupLabel === 'RECENT') {
-      return this.recents.map((branch) => new BranchTreeItem(branch));
-    }
-
     if (element instanceof GroupTreeItem && element.groupLabel === 'LOCAL') {
-      return [...this.localByGroup.keys()].map((group) => new GroupTreeItem(group, `gitcc.group.local.${group}`));
+      return [...this.localByGroup.keys()].map(
+        (group) =>
+          new GroupTreeItem(
+            group,
+            `gitcc.group.local.${group}`,
+            vscode.TreeItemCollapsibleState.Expanded,
+          ),
+      );
     }
 
     if (element instanceof GroupTreeItem && element.groupLabel === 'REMOTE') {
-      return [...this.remoteByGroup.keys()].map((group) => new GroupTreeItem(group, `gitcc.group.remote.${group}`));
+      return [...this.remoteByGroup.keys()].map(
+        (group) =>
+          new GroupTreeItem(
+            group,
+            `gitcc.group.remote.${group}`,
+            vscode.TreeItemCollapsibleState.Expanded,
+          ),
+      );
     }
 
     if (element instanceof GroupTreeItem && element.contextValueKey.startsWith('gitcc.group.local.')) {

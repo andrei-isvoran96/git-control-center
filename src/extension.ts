@@ -31,7 +31,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   const repositoryManager = new RepositoryManager(gitService);
   const repositoriesProvider = new RepositoriesProvider(repositoryManager);
-  const branchesProvider = new BranchesProvider(gitService, repositoryManager, configService, branchMemoryService);
+  const branchesProvider = new BranchesProvider(gitService, repositoryManager, configService);
   const changesProvider = new ChangesProvider(gitService, repositoryManager);
   const stashProvider = new StashProvider(gitService, repositoryManager);
   const worktreesProvider = new WorktreesProvider(gitService, repositoryManager);

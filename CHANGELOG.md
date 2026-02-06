@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.4
+- Updated Branches UI to match IntelliJ-style navigation:
+- Removed Favorites and Recent branch sections.
+- Current branch now has a distinct icon for quick identification.
+- Branch groups default to expanded when opening the Branches section.
+- Commit panel and Branches interactions refined for a cleaner single-tab workflow.
+
 ## 0.2.0
 - Added Killer Differentiators v1:
 - Branch Operations Panel (`gitcc.branchActions`).
